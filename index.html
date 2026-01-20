@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes"/>
+  <title>Calendrier Bassa'a Perpétuel - NGAAKEK KOM BOGA</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#1a5c2e">
+  <style>
+    /* RESET COMPLET POUR COMPATIBILITÉ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    
+    html {
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+      font-size: 16px;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #0b3d1a 0%, #1a5c2e 100%);
+      color: #f0f7da;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      width: 100%;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* HEADER */
+    .header {
+      text-align: center;
+      width: 100%;
+      max-width: 1400px;
+      margin-bottom: 15px;
+      padding: 0 5px;
+    }
+    
+    .header h1 {
+      font-size: 1.8rem;
+      color: #ffdd57;
+      margin-bottom: 5px;
+      line-height: 1.3;
+      word-wrap: break-word;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    .header p {
+      font-size: 1rem;
+      opacity: 0.9;
+      line-height: 1.4;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    /* CONTAINER PRINCIPAL */
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 1400px;
+      gap: 20px;
+    }
+    
+    @media (min-width: 992px) {
+      .main-container {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+    
+    /* SECTION CALENDRIER - AGRANDIE */
+    .calendar-section {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .calendar {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to right, #2a7d3e, #1a5c2e);
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    
+    .nav-btn:active {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(0.95);
+    }
+    
+    .month-title {
+      text-align: center;
+      flex: 1;
+      min-width: 0;
+      padding: 0 15px;
+    }
+    
+    .bassa-month {
+      font-size: 1.6rem;
+      color: #ffdd57;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: bold;
+    }
+    
+    .nwii-year {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-top: 3px;
+      color: #a8e6a8;
+    }
+    
+    /* GRILLE DU CALENDRIER - AGRANDIE */
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 0;
+      max-height: 500px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .calendar-grid::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .calendar-grid::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+    }
+    
+    .calendar-grid::-webkit-scrollbar-thumb {
+      background: rgba(255, 221, 87, 0.5);
+      border-radius: 4px;
+    }
+    
+    .day-cell {
+      padding: 12px 6px;
+      text-align: center;
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      min-height: 95px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.05);
+      transition: background-color 0.2s;
+    }
+    
+    .day-cell:nth-child(10n) {
+      border-right: none;
+    }
+    
+    .day-cell:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .day-cell.selected {
+      background: rgba(255, 221, 87, 0.25) !important;
+      box-shadow: inset 0 0 0 3px #ffdd57;
+    }
+    
+    .day-cell.today {
+      background: rgba(255, 221, 87, 0.2) !important;
+      box-shadow: inset 0 0 0 2px #ffdd57;
+    }
+    
+    .bassa-day {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white;
+      margin-bottom: 3px;
+    }
+    
+    .selected .bassa-day,
+    .today .bassa-day {
+      color: #ffdd57;
+      font-size: 2rem;
+    }
+    
+    .tolangwa-name {
+      font-size: 0.75rem;
+      color: #a8e6a8;
+      margin-bottom: 3px;
+      font-style: italic;
+    }
+    
+    .ngwa-name {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #ffdd57;
+      margin-bottom: 4px;
+    }
+    
+    .gregorian-date {
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 3px 6px;
+      border-radius: 5px;
+      color: white;
+      font-weight: 500;
+    }
+    
+    /* JOURS SPÉCIAUX */
+    .special-day {
+      position: relative;
+      background: rgba(255, 107, 107, 0.1) !important;
+    }
+    
+    .special-day::before {
+      content: '★';
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      font-size: 0.7rem;
+      color: #ffdd57;
+    }
+    
+    .new-year-day {
+      background: rgba(255, 107, 107, 0.2) !important;
+      border: 2px solid rgba(255, 107, 107, 0.4);
+    }
+    
+    /* BOUTON TRADITION - EN BAS DU CALENDRIER */
+    .tradition-btn-container {
+      margin-top: 15px;
+    }
+    
+    .tradition-btn {
+      width: 100%;
+      background: linear-gradient(to right, #ffdd57, #ffcc00);
+      color: #1a5c2e;
+      border: none;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(255, 221, 87, 0.3);
+    }
+    
+    .tradition-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 221, 87, 0.4);
+    }
+    
+    .tradition-btn:active {
+      transform: translateY(0);
+    }
+    
+    /* SECTION INFORMATIONS - REMONTÉE VERS LE HAUT */
+    .info-section {
+      flex: 0 0 400px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    @media (min-width: 992px) {
+      .info-section {
+        position: sticky;
+        top: 20px;
+      }
+    }
+    
+    .info-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    .current-info h2 {
+      color: #ffdd57;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .info-item {
+      margin-bottom: 12px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      border-left: 4px solid #ffdd57;
+    }
+    
+    .info-label {
+      font-size: 0.85rem;
+      color: #a8e6a8;
+      margin-bottom: 3px;
+    }
+    
+    .info-value {
+      font-size: 1.2rem;
+      color: #ffdd57;
+      font-weight: bold;
+    }
+    
+    .info-detail {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin-top: 3px;
+    }
+    
+    /* PHASE DE LA LUNE - EN DESSOUS DES INFORMATIONS */
+    .moon-section {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+    
+    .moon-section h3 {
+      color: #ffdd57;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+    
+    .moon {
+      font-size: 80px;
+      margin: 10px 0;
+    }
+    
+    .phase {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #ffdd57;
+      margin-bottom: 8px;
+    }
+    
+    .moon-info {
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
+    
+    /* MODAL TRADITION */
+    .tradition-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 20px;
+    }
+    
+    .tradition-content {
+      background: linear-gradient(135deg, #0b3d1a 0%, #1a5c2e 100%);
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 15px;
+      border: 2px solid #ffdd57;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #ffdd57;
+      color: #1a5c2e;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .tradition-content h2 {
+      color: #ffdd57;
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      border-bottom: 2px solid #ffdd57;
+      padding-bottom: 10px;
+    }
+    
+    .notes {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    
+    .notes strong {
+      color: #ffdd57;
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+    
+    .notes blockquote {
+      border-left: 4px solid #ffdd57;
+      padding: 15px 20px;
+      margin: 20px 0;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 0 8px 8px 0;
+      font-style: italic;
+    }
+    
+    .notes p {
+      margin-bottom: 20px;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 991px) {
+      .calendar-grid {
+        grid-template-columns: repeat(5, 1fr);
+      }
+      
+      .day-cell:nth-child(5n) {
+        border-right: none;
+      }
+      
+      .day-cell:nth-child(10n) {
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      
+      .header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .bassa-day {
+        font-size: 1.6rem;
+      }
+      
+      .selected .bassa-day,
+      .today .bassa-day {
+        font-size: 1.8rem;
+      }
+      
+      .info-section {
+        flex: 1;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        padding: 8px;
+      }
+      
+      .calendar-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-height: 400px;
+      }
+      
+      .day-cell:nth-child(3n) {
+        border-right: none;
+      }
+      
+      .day-cell:nth-child(5n), .day-cell:nth-child(10n) {
+        border-right: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      
+      .calendar-header {
+        padding: 12px 15px;
+      }
+      
+      .nav-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+      }
+      
+      .bassa-month {
+        font-size: 1.3rem;
+      }
+      
+      .day-cell {
+        min-height: 85px;
+        padding: 10px 4px;
+      }
+      
+      .tradition-btn {
+        padding: 14px;
+        font-size: 1.1rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .calendar-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .day-cell:nth-child(2n) {
+        border-right: none;
+      }
+      
+      .header h1 {
+        font-size: 1.3rem;
+      }
+      
+      .bassa-day {
+        font-size: 1.4rem;
+      }
+      
+      .day-cell {
+        min-height: 80px;
+      }
+      
+      .moon {
+        font-size: 60px;
+      }
+      
+      .tradition-btn {
+        font-size: 1rem;
+        padding: 12px;
+      }
+    }
+    
+    /* ANIMATIONS */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .tradition-content {
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    /* SUPPORT POUR TOUCH */
+    @supports (-webkit-touch-callout: none) {
+      body {
+        min-height: -webkit-fill-available;
+      }
+      
+      .calendar-grid,
+      .tradition-modal {
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Calendrier Bassa'a - NGAAKEK KOM BOGA</h1>
+    <p>Un calendrier traditionnel basé sur le système 12 mois × 3 semaines × 10 jours (360 jours/an) + 5 jours de Ngand Babog</p>
+  </div>
+  
+  <div class="main-container">
+    <!-- SECTION CALENDRIER AVEC BOUTON EN BAS -->
+    <div class="calendar-section">
+      <div class="calendar">
+        <div class="calendar-header">
+          <button class="nav-btn" id="prev">←</button>
+          <div class="month-title">
+            <div class="bassa-month" id="bassa-month-name"></div>
+            <div class="nwii-year" id="nwii-year-display"></div>
+          </div>
+          <button class="nav-btn" id="next">→</button>
+        </div>
+        
+        <div class="calendar-grid" id="calendar-grid">
+          <!-- Les jours seront générés par JavaScript -->
+        </div>
+      </div>
+      
+      <!-- BOUTON TRADITION - EN BAS DU CALENDRIER -->
+      <div class="tradition-btn-container">
+        <button class="tradition-btn" id="tradition-btn">
+          📜 ⟪ Ndeg Ndopol ⟫
+        </button>
+      </div>
+    </div>
+    
+    <!-- SECTION INFORMATIONS - REMONTÉE VERS LE HAUT -->
+    <div class="info-section">
+      <!-- INFORMATIONS DU JOUR -->
+      <div class="info-card current-info">
+        <h2>📅 Informations du jour</h2>
+        
+        <div class="info-item">
+          <div class="info-label">Année NWII</div>
+          <div class="info-value" id="current-nwii">42795</div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label">Mois (Soŋ)</div>
+          <div class="info-value" id="current-month">Kɔndɔŋ</div>
+          <div class="info-detail" id="current-month-detail"></div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label">Décade (Tolangwa)</div>
+          <div class="info-value" id="current-tolangwa">Adna</div>
+          <div class="info-detail" id="current-tolangwa-detail"></div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label">Jour (Ngwa)</div>
+          <div class="info-value" id="current-ngwa">Njek</div>
+          <div class="info-detail" id="current-ngwa-detail"></div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label">Date dans le mois</div>
+          <div class="info-value" id="current-date">3</div>
+          <div class="info-detail" id="current-date-detail"></div>
+        </div>
+        
+        <div class="info-item">
+          <div class="info-label">Date grégorienne</div>
+          <div class="info-value" id="current-gregorian"></div>
+        </div>
+      </div>
+      
+      <!-- PHASE DE LA LUNE - EN DESSOUS DES INFORMATIONS -->
+      <div class="info-card moon-section">
+        <h3>🌙 Phase de la Lune</h3>
+        <div id="moon" class="moon">🌓</div>
+        <div id="phase" class="phase">Premier Quartier</div>
+        <div id="illumination" class="moon-info">Illumination : 50%</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- MODAL TRADITION -->
+  <div class="tradition-modal" id="tradition-modal">
+    <div class="tradition-content">
+      <button class="close-btn" id="close-modal">&times;</button>
+      <h2>⟪ Ndeg Ndopol ⟫</h2>
+      <div class="notes">
+        <p><strong>Bassa ba bi bodol aŋ ni bok ngeda len 42794 nwii</strong><br><br>
+        hala we 25 ma bikèk bi hisòt (cycles sothiaques) i lò ane i bi farao i be bodòl i Kemet.<br>
+        Kèk hisòt yada i nòm 1460 nwii.<br>
+        I kèk di yè, i bi bodle i nwii 42369, len 425 nwii. I ga melel i nwii 43830, len 1036 nwii.<br>
+        Hiki hilo bisu hi soŋ njeba, nwii wada u nkondba.<br>
+        Handugi i ndeg mam i, ngààkek i nhen be.</p>
+
+        <p><strong>Nwii u ye nkabag</strong><br><br>
+        [1*2 soŋ] : Njeba, Hikaŋ, Dipos, Bi oom, Ma ye sep, Lìbuy li nyee, Kondoŋ.<br>
+        Macel, Matop, Martúmb, Mpuye, Hilòndè.</p>
+
+        <blockquote>
+          **Dilo di tan, dilo di ngand Bàbog i pola lisuk li nwii ni bi bodle bi nwii yondo : ngwa Sep to le lwiye, ngwa Hòdo, ngwa Hisi, ngwa Lisànda ni ngwa Kòhle.<br>
+          **Ngeŋ i samal.<br>
+          Soŋ i gwe 30 ma dilo, nkabak tolangwà i aa.<br>
+          Hiki tolangwa i gwe ma ngwà to le dilo 10 : ngwa Njangumba, ngwa Mbak, ngwa Njek, ngwa Nge, ngwa Um, ngwa Mbok, ngwa Koo, ngwa Jon, ngwà Bilàba, ngwà Bum.<br>
+          Nwii u gwe tolangwà 36.
+        </blockquote>
+
+        <p><strong>Bi yimbne bi samal inyu yi aŋ ngaakek :</strong><br><br>
+        ▪ Ngwa Njangumba, hilo bisu hi Njeba a ye kel ngand nwii yondo.<br>
+        ▪ Ngwa Koo, hilo 27 hi Hikaŋ a ye kel mbigda nyemb Um Nyobe.<br>
+        ▪ Ngwa Njek, hilo 23 hi Bi oom, a ye kel ngand Mpoo.<br>
+        ▪ Ngwa Bum, hilo 10 hi Libuy li nyee a ye kel ngand ngwo.<br>
+        ▪ Ngwa Koo, hilo 17 hi Libuy li nyee a ye kel mbigda Kunde lon Kamerun.<br>
+        ▪ Ngwa Koo, hilo 17 hi Matop a ye kel ngand nson.
+        </p>
+        <p><strong>Hilo hi bisu hi soŋ</strong><br><br>
+        Njeba          = 19 juillet<br>
+        Hikaŋ          = 18 aout<br>
+        Dipos          = 17 septembre<br>
+        Bi oom         = 17 octobre<br>
+        Ma ye sep      = 16 novembre<br>
+        Libuy li nyee  = 16 decembre<br>
+        Kondoŋ         = 15 janvier<br>
+        Macel          = 14 fevrier<br>
+        Matop          = 15 mars<br>
+        Matumb         = 14 avril<br>
+        Mpuye          = 14 mai<br>
+        Hilonde        = 13 juin<br></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Attendre que la page soit complètement chargée
+    window.addEventListener('load', function() {
+      // DONNÉES FIXES - CORRIGÉES selon les anciens
+      const bassaMonths = [
+        { name: "Kɔndɔŋ", meaning: "Premier mois de l'année" },
+        { name: "Màtum", meaning: "Mois des semences" },
+        { name: "Màtɔp", meaning: "Mois des premières pluies" },
+        { name: "Mpuyɛ", meaning: "Mois de la croissance" },
+        { name: "Hikaŋ", meaning: "Mois de la petite sécheresse" },
+        { name: "Njeba", meaning: "Mois des prémices" },
+        { name: "Libuy li nye", meaning: "Mois des fruits mûrs" },
+        { name: "Màtɛl", meaning: "Mois des grandes récoltes" },
+        { name: "Bi oom", meaning: "Mois des secondes pluies" },
+        { name: "Di pɔh", meaning: "Mois des semis tardifs" },
+        { name: "Mà yɛ sep", meaning: "Mois de la grande sécheresse" },
+        { name: "Hilonde", meaning: "Dernier mois de l'année" }
+      ];
+      
+      const tolangwaNames = [
+        "BODÑEM", "BILIA", "NGÉN", "SUHUL NYU", "NDAG", "SESEMA", 
+        "GWÉHA", "MAYEGNA", "NGÉDI", "MASODA", "LIGIB", "BABOD", 
+        "OMSIÑ", "M'BAN", "BABOG", "NWEE", "MAKÉND", "LINGWÉLÉH",
+        "ADNA", "MAPUBI", "LIKWEE", "NJIÑGE", "HOGBE", "LIKEÑGE", 
+        "NIHBE", "MAHOL", "NTOL", "NSAÑ", "LIPÉM", "NJOHA", 
+        "NGOO", "MANOGLA", "LIPOYOG", "MASÉ", "LIBO", "LIKAB"
+      ];
+      
+      // CORRECTION: Um et Nge inversés, et orthographe corrigée
+      const ngwaDays = [
+        { name: "Njangumba", meaning: "Premier marché, jour d'ouverture" },
+        { name: "Mbak", meaning: "Deuxième jour, jour de force" },
+        { name: "Njek", meaning: "Troisième jour, jour d'équilibre" },
+        { name: "Nge", meaning: "Quatrième jour, transition" },
+        { name: "Um", meaning: "Cinquième jour, préparation" },
+        { name: "Mbok", meaning: "Sixième jour, repos méditatif" },
+        { name: "Koo", meaning: "Septième jour, accomplissement" },
+        { name: "Jon", meaning: "Huitième jour, clôture" },
+        { name: "Bilàba", meaning: "Neuvième jour, appel" },
+        { name: "Bum", meaning: "Dixième jour, sacré" }
+      ];
+      
+      // JOURS SPÉCIAUX (dates grégoriennes) - Pour marquage seulement
+      const specialDays = [
+        { month: 6, day: 19, event: "Fête de début d'année", isNewYear: true },
+        { month: 7, day: 27, event: "Mort de Ruben Um Nyobe" },
+        { month: 3, day: 23, event: "Fête Mpoo" },
+        { month: 5, day: 10, event: "Fête du feu" },
+        { month: 5, day: 17, event: "Révolte Kunde" },
+        { month: 2, day: 17, event: "Fête des ancêtres" }
+      ];
+      
+      // POINT DE RÉFÉRENCE
+      const referenceGregorian = new Date(2026, 0, 17); // 17 janvier 2026
+      const referenceBassa = {
+        nwii: 42795,
+        month: 0,
+        dayInMonth: 3,
+        tolangwaIndex: 18,
+        ngwaIndex: 2 // Njek (index 2)
+      };
+      
+      // CONSTANTES
+      const DAYS_IN_MONTH = 30;
+      const DAYS_IN_YEAR = 365;
+      const NGAND_DAYS = 5;
+      const DAYS_PER_TOLANGWA = 10;
+      const TOLANGWA_PER_YEAR = 36;
+      
+      // ÉTAT
+      let currentBassaDate;
+      let selectedBassaDate;
+      let displayedMonth = 0;
+      let displayedNwii = 42795;
+      
+      // ÉLÉMENTS DOM
+      const elements = {
+        calendarGrid: document.getElementById('calendar-grid'),
+        bassaMonthName: document.getElementById('bassa-month-name'),
+        nwiiYearDisplay: document.getElementById('nwii-year-display'),
+        currentNwii: document.getElementById('current-nwii'),
+        currentMonth: document.getElementById('current-month'),
+        currentMonthDetail: document.getElementById('current-month-detail'),
+        currentTolangwa: document.getElementById('current-tolangwa'),
+        currentTolangwaDetail: document.getElementById('current-tolangwa-detail'),
+        currentNgwa: document.getElementById('current-ngwa'),
+        currentNgwaDetail: document.getElementById('current-ngwa-detail'),
+        currentDate: document.getElementById('current-date'),
+        currentDateDetail: document.getElementById('current-date-detail'),
+        currentGregorian: document.getElementById('current-gregorian'),
+        prevBtn: document.getElementById('prev'),
+        nextBtn: document.getElementById('next'),
+        traditionBtn: document.getElementById('tradition-btn'),
+        traditionModal: document.getElementById('tradition-modal'),
+        closeModal: document.getElementById('close-modal')
+      };
+      
+      // FONCTIONS DE CALCUL
+      function calculateBassaDate(gregorianDate) {
+        const diffDays = Math.floor((gregorianDate - referenceGregorian) / (1000 * 60 * 60 * 24));
+        
+        let totalBassaDays = referenceBassa.dayInMonth - 1;
+        totalBassaDays += referenceBassa.month * DAYS_IN_MONTH;
+        totalBassaDays += diffDays;
+        
+        const yearsFromRef = Math.floor(totalBassaDays / DAYS_IN_YEAR);
+        totalBassaDays += yearsFromRef * NGAND_DAYS;
+        
+        const nwii = referenceBassa.nwii + yearsFromRef;
+        let dayInYear = totalBassaDays % DAYS_IN_YEAR;
+        if (dayInYear < 0) dayInYear += DAYS_IN_YEAR;
+        
+        const isNgand = dayInYear >= 360;
+        let month, dayInMonth, tolangwaIndex, ngwaIndex;
+        
+        if (isNgand) {
+          month = 11;
+          dayInMonth = 30 + (dayInYear - 360 + 1);
+          tolangwaIndex = 35;
+          ngwaIndex = 9;
+        } else {
+          month = Math.floor(dayInYear / DAYS_IN_MONTH);
+          dayInMonth = (dayInYear % DAYS_IN_MONTH) + 1;
+          const tolangwaInYear = Math.floor(dayInYear / DAYS_PER_TOLANGWA);
+          tolangwaIndex = tolangwaInYear % TOLANGWA_PER_YEAR;
+          if (tolangwaIndex < 0) tolangwaIndex += TOLANGWA_PER_YEAR;
+          ngwaIndex = (dayInMonth - 1) % DAYS_PER_TOLANGWA;
+        }
+        
+        return {
+          nwii: nwii,
+          month: month,
+          dayInMonth: dayInMonth,
+          tolangwaIndex: tolangwaIndex,
+          tolangwaName: tolangwaNames[tolangwaIndex],
+          ngwaIndex: ngwaIndex,
+          ngwaName: ngwaDays[ngwaIndex].name,
+          ngwaMeaning: ngwaDays[ngwaIndex].meaning,
+          isNgand: isNgand,
+          gregorianDate: gregorianDate
+        };
+      }
+      
+      function calculateGregorianDate(bassaDate) {
+        const yearsDiff = bassaDate.nwii - referenceBassa.nwii;
+        let totalDays = (bassaDate.month * DAYS_IN_MONTH) + (bassaDate.dayInMonth - 1);
+        totalDays -= yearsDiff * NGAND_DAYS;
+        totalDays -= (referenceBassa.month * DAYS_IN_MONTH) + (referenceBassa.dayInMonth - 1);
+        
+        const resultDate = new Date(referenceGregorian);
+        resultDate.setDate(resultDate.getDate() + totalDays);
+        return resultDate;
+      }
+      
+      function isSpecialDay(gregorianDate) {
+        const month = gregorianDate.getMonth();
+        const day = gregorianDate.getDate();
+        return specialDays.some(special => special.month === month && special.day === day);
+      }
+      
+      function isNewYearDay(bassaDate) {
+        return bassaDate.month === 0 && bassaDate.dayInMonth === 1;
+      }
+      
+      // FONCTIONS D'AFFICHAGE
+      function updateCurrentDateDisplay(date) {
+        const bassaDate = date || currentBassaDate;
+        
+        elements.currentNwii.textContent = bassaDate.nwii;
+        elements.currentMonth.textContent = bassaMonths[bassaDate.month].name;
+        elements.currentMonthDetail.textContent = bassaMonths[bassaDate.month].meaning;
+        elements.currentTolangwa.textContent = bassaDate.tolangwaName;
+        elements.currentTolangwaDetail.textContent = `Décade ${bassaDate.tolangwaIndex + 1} de l'année`;
+        elements.currentNgwa.textContent = bassaDate.ngwaName;
+        elements.currentNgwaDetail.textContent = bassaDate.ngwaMeaning;
+        elements.currentDate.textContent = bassaDate.dayInMonth;
+        elements.currentDateDetail.textContent = `Jour ${bassaDate.dayInMonth} du mois`;
+        
+        const gregorianDate = bassaDate.gregorianDate || calculateGregorianDate(bassaDate);
+        elements.currentGregorian.textContent = gregorianDate.toLocaleDateString('fr-FR', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+      }
+      
+      function renderCalendar() {
+        elements.bassaMonthName.textContent = bassaMonths[displayedMonth].name;
+        elements.nwiiYearDisplay.textContent = `NWII ${displayedNwii} - ${bassaMonths[displayedMonth].name}`;
+        
+        elements.calendarGrid.innerHTML = '';
+        
+        const todayBassa = calculateBassaDate(new Date());
+        const isCurrentMonth = displayedMonth === todayBassa.month && displayedNwii === todayBassa.nwii;
+        
+        for (let day = 1; day <= 30; day++) {
+          const dayBassaDate = {
+            nwii: displayedNwii,
+            month: displayedMonth,
+            dayInMonth: day
+          };
+          
+          const dayInYear = (displayedMonth * DAYS_IN_MONTH) + (day - 1);
+          const tolangwaInYear = Math.floor(dayInYear / DAYS_PER_TOLANGWA);
+          const tolangwaIndex = tolangwaInYear % TOLANGWA_PER_YEAR;
+          const ngwaIndex = (day - 1) % DAYS_PER_TOLANGWA;
+          
+          const isToday = isCurrentMonth && day === todayBassa.dayInMonth;
+          const isSelected = selectedBassaDate && 
+                            selectedBassaDate.month === displayedMonth && 
+                            selectedBassaDate.nwii === displayedNwii && 
+                            selectedBassaDate.dayInMonth === day;
+          
+          const gregorianDate = calculateGregorianDate(dayBassaDate);
+          const isSpecial = isSpecialDay(gregorianDate);
+          const isNewYear = isNewYearDay(dayBassaDate);
+          
+          const dayCell = document.createElement('div');
+          dayCell.className = 'day-cell';
+          if (isToday) dayCell.classList.add('today');
+          if (isSelected) dayCell.classList.add('selected');
+          if (isSpecial) dayCell.classList.add('special-day');
+          if (isNewYear) dayCell.classList.add('new-year-day');
+          
+          const gregorianFormatted = gregorianDate.toLocaleDateString('fr-FR', {
+            day: 'numeric',
+            month: 'short'
+          });
+          
+          dayCell.innerHTML = `
+            <div class="bassa-day">${day}</div>
+            <div class="tolangwa-name">${tolangwaNames[tolangwaIndex]}</div>
+            <div class="ngwa-name">${ngwaDays[ngwaIndex].name}</div>
+            <div class="gregorian-date">${gregorianFormatted}</div>
+          `;
+          
+          // Stocker les données dans l'élément
+          dayCell.dataset.bassaDate = JSON.stringify({
+            nwii: displayedNwii,
+            month: displayedMonth,
+            dayInMonth: day,
+            tolangwaIndex: tolangwaIndex,
+            ngwaIndex: ngwaIndex
+          });
+          
+          dayCell.addEventListener('click', function() {
+            const bassaData = JSON.parse(this.dataset.bassaDate);
+            const gregorianDate = calculateGregorianDate(bassaData);
+            const selectedDate = calculateBassaDate(gregorianDate);
+            selectedBassaDate = selectedDate;
+            
+            // Mettre à jour l'affichage
+            updateCurrentDateDisplay(selectedDate);
+            
+            // Mettre à jour la sélection visuelle
+            document.querySelectorAll('.day-cell.selected').forEach(cell => {
+              cell.classList.remove('selected');
+            });
+            this.classList.add('selected');
+          });
+          
+          elements.calendarGrid.appendChild(dayCell);
+        }
+        
+        // Sélectionner automatiquement aujourd'hui si c'est le bon mois
+        if (isCurrentMonth) {
+          const todayCell = elements.calendarGrid.children[todayBassa.dayInMonth - 1];
+          if (todayCell) {
+            todayCell.classList.add('selected');
+            selectedBassaDate = todayBassa;
+          }
+        }
+      }
+      
+      // PHASE DE LA LUNE
+      function updateMoonPhase() {
+        const today = new Date();
+        const phase = moonPhase(today);
+        const percent = Math.round((1 - Math.cos(2 * Math.PI * phase / 29.53)) * 50);
+        
+        let name = "", emoji = "";
+        
+        if (phase < 1.84566) {
+          name = "Nouvelle Lune"; emoji = "🌑";
+        } else if (phase < 5.53699) {
+          name = "Premier Croissant"; emoji = "🌒";
+        } else if (phase < 9.22831) {
+          name = "Premier Quartier"; emoji = "🌓";
+        } else if (phase < 12.91963) {
+          name = "Gibbeuse Croissante"; emoji = "🌔";
+        } else if (phase < 16.61096) {
+          name = "Pleine Lune"; emoji = "🌕";
+        } else if (phase < 20.30228) {
+          name = "Gibbeuse Décroissante"; emoji = "🌖";
+        } else if (phase < 23.99361) {
+          name = "Dernier Quartier"; emoji = "🌗";
+        } else {
+          name = "Dernier Croissant"; emoji = "🌘";
+        }
+        
+        document.getElementById("moon").textContent = emoji;
+        document.getElementById("phase").textContent = name;
+        document.getElementById("illumination").textContent = "Illumination : " + percent + "%";
+      }
+      
+      function moonPhase(date) {
+        const synodicMonth = 29.530588853;
+        const referenceNewMoon = new Date("2000-01-06T18:14:00Z");
+        const days = (date - referenceNewMoon) / 86400000;
+        return ((days % synodicMonth) + synodicMonth) % synodicMonth;
+      }
+      
+      // GESTION DU MODAL TRADITION
+      elements.traditionBtn.addEventListener('click', function() {
+        elements.traditionModal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      });
+      
+      elements.closeModal.addEventListener('click', function() {
+        elements.traditionModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      });
+      
+      // Fermer le modal en cliquant à l'extérieur
+      elements.traditionModal.addEventListener('click', function(event) {
+        if (event.target === elements.traditionModal) {
+          elements.traditionModal.style.display = 'none';
+          document.body.style.overflow = 'auto';
+        }
+      });
+      
+      // NAVIGATION
+      elements.prevBtn.addEventListener('click', function() {
+        displayedMonth--;
+        if (displayedMonth < 0) {
+          displayedMonth = 11;
+          displayedNwii--;
+        }
+        renderCalendar();
+      });
+      
+      elements.nextBtn.addEventListener('click', function() {
+        displayedMonth++;
+        if (displayedMonth > 11) {
+          displayedMonth = 0;
+          displayedNwii++;
+        }
+        renderCalendar();
+      });
+      
+      // Support tactile pour navigation
+      elements.prevBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        this.style.transform = 'scale(0.95)';
+      });
+      
+      elements.prevBtn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        this.style.transform = '';
+        this.click();
+      });
+      
+      elements.nextBtn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        this.style.transform = 'scale(0.95)';
+      });
+      
+      elements.nextBtn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        this.style.transform = '';
+        this.click();
+      });
+      
+      // INITIALISATION
+      function init() {
+        currentBassaDate = calculateBassaDate(new Date());
+        displayedMonth = currentBassaDate.month;
+        displayedNwii = currentBassaDate.nwii;
+        
+        updateCurrentDateDisplay();
+        renderCalendar();
+        updateMoonPhase();
+        
+        // Mettre à jour l'heure toutes les minutes
+        setInterval(function() {
+          currentBassaDate = calculateBassaDate(new Date());
+          if (displayedMonth === currentBassaDate.month && displayedNwii === currentBassaDate.nwii) {
+            renderCalendar();
+          }
+        }, 60000);
+        
+        // Mettre à jour la phase de la lune toutes les heures
+        setInterval(updateMoonPhase, 3600000);
+      }
+      
+      // DÉMARRER
+      init();
+    });
+  </script>
+</body>
+</html>
