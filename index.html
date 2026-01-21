@@ -93,6 +93,111 @@
       flex-direction: column;
     }
     
+    /* SELECTEUR DE DATE - NOUVEAU */
+    .date-selector {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin-bottom: 15px;
+    }
+    
+    .date-selector h3 {
+      color: #ffdd57;
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .date-selector-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .date-input-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      flex: 1;
+    }
+    
+    .date-input-group label {
+      font-size: 0.8rem;
+      color: #a8e6a8;
+      margin-bottom: 4px;
+      text-align: center;
+    }
+    
+    .date-input-group select,
+    .date-input-group input {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      color: white;
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      min-width: 0;
+    }
+    
+    .date-input-group select:focus,
+    .date-input-group input:focus {
+      outline: none;
+      border-color: #ffdd57;
+      box-shadow: 0 0 0 2px rgba(255, 221, 87, 0.3);
+    }
+    
+    .date-input-group input {
+      text-align: center;
+    }
+    
+    .date-selector-buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 5px;
+    }
+    
+    .date-selector-btn {
+      background: linear-gradient(to right, #2a7d3e, #1a5c2e);
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+    
+    .date-selector-btn:hover {
+      background: linear-gradient(to right, #3a9d4e, #2a7d3e);
+    }
+    
+    .date-selector-btn:active {
+      transform: scale(0.98);
+    }
+    
+    .date-selector-btn.primary {
+      background: linear-gradient(to right, #ffdd57, #ffcc00);
+      color: #1a5c2e;
+      font-weight: bold;
+    }
+    
+    .date-selector-btn.primary:hover {
+      background: linear-gradient(to right, #ffed77, #ffdc20);
+    }
+    
     .calendar {
       background: rgba(255, 255, 255, 0.1);
       border-radius: 12px;
@@ -128,7 +233,13 @@
       transition: all 0.2s;
     }
     
-    .nav-btn:active {
+    .nav-btn:disabled {
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+      cursor: not-allowed;
+    }
+    
+    .nav-btn:not(:disabled):active {
       background: rgba(255, 255, 255, 0.3);
       transform: scale(0.95);
     }
@@ -471,6 +582,15 @@
       margin-bottom: 20px;
     }
     
+    /* MESSAGE D'ERREUR */
+    .error-message {
+      color: #ff6b6b;
+      font-size: 0.85rem;
+      margin-top: 5px;
+      text-align: center;
+      display: none;
+    }
+    
     /* RESPONSIVE */
     @media (max-width: 991px) {
       .calendar-grid {
@@ -500,6 +620,19 @@
       
       .info-section {
         flex: 1;
+      }
+      
+      .date-selector-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .date-input-group {
+        width: 100%;
+      }
+      
+      .date-selector-buttons {
+        width: 100%;
       }
     }
     
@@ -544,6 +677,14 @@
         padding: 14px;
         font-size: 1.1rem;
       }
+      
+      .date-selector {
+        padding: 12px;
+      }
+      
+      .date-selector h3 {
+        font-size: 1rem;
+      }
     }
     
     @media (max-width: 480px) {
@@ -574,6 +715,10 @@
       .tradition-btn {
         font-size: 1rem;
         padding: 12px;
+      }
+      
+      .date-selector-buttons {
+        flex-direction: column;
       }
     }
     
@@ -607,8 +752,43 @@
   </div>
   
   <div class="main-container">
-    <!-- SECTION CALENDRIER AVEC BOUTON EN BAS -->
+    <!-- SECTION CALENDRIER AVEC SELECTEUR EN HAUT ET BOUTON EN BAS -->
     <div class="calendar-section">
+      <!-- NOUVEAU SELECTEUR DE DATE -->
+      <div class="date-selector">
+        <h3>📅 Aller à une date précise</h3>
+        <div class="date-selector-form">
+          <div class="date-input-group">
+            <label for="year-input">Année NWII</label>
+            <input type="number" id="year-input" min="1" max="100000" value="42795" placeholder="Année NWII">
+          </div>
+          
+          <div class="date-input-group">
+            <label for="month-select">Mois Bassa'a</label>
+            <select id="month-select">
+              <!-- Les mois seront ajoutés par JavaScript -->
+            </select>
+          </div>
+          
+          <div class="date-input-group">
+            <label for="day-select">Jour du mois</label>
+            <select id="day-select">
+              <!-- Les jours seront ajoutés par JavaScript -->
+            </select>
+          </div>
+          
+          <div class="date-selector-buttons">
+            <button class="date-selector-btn" id="go-today-btn">
+              <span>📅</span> Aujourd'hui
+            </button>
+            <button class="date-selector-btn primary" id="go-date-btn">
+              <span>🚀</span> Aller à cette date
+            </button>
+          </div>
+        </div>
+        <div class="error-message" id="date-error"></div>
+      </div>
+      
       <div class="calendar">
         <div class="calendar-header">
           <button class="nav-btn" id="prev">←</button>
@@ -766,8 +946,8 @@
         { name: "Njangumba", meaning: "Premier marché, jour d'ouverture" },
         { name: "Mbak", meaning: "Deuxième jour, jour de force" },
         { name: "Njek", meaning: "Troisième jour, jour d'équilibre" },
-        { name: "Nge", meaning: "Quatrième jour, transition" },
-        { name: "Um", meaning: "Cinquième jour, préparation" },
+        { name: "Nge", meaning: "Cinquième jour, préparation" },
+        { name: "Um", meaning: "Quatrième jour, transition" },
         { name: "Mbok", meaning: "Sixième jour, repos méditatif" },
         { name: "Koo", meaning: "Septième jour, accomplissement" },
         { name: "Jon", meaning: "Huitième jour, clôture" },
@@ -785,22 +965,31 @@
         { month: 2, day: 17, event: "Fête des ancêtres" }
       ];
       
-      // POINT DE RÉFÉRENCE
-      const referenceGregorian = new Date(2026, 0, 17); // 17 janvier 2026
-      const referenceBassa = {
-        nwii: 42795,
-        month: 0,
-        dayInMonth: 3,
-        tolangwaIndex: 18,
-        ngwaIndex: 2 // Njek (index 2)
-      };
-      
-      // CONSTANTES
+      // CONSTANTES DU CALENDRIER BASSA'A
       const DAYS_IN_MONTH = 30;
       const DAYS_IN_YEAR = 365;
+      const DAYS_IN_COMMON_YEAR = 360;
       const NGAND_DAYS = 5;
       const DAYS_PER_TOLANGWA = 10;
       const TOLANGWA_PER_YEAR = 36;
+      const MIN_YEAR = 1;
+      const MAX_YEAR = 100000;
+      
+      // RELATION DE BASE ENTRE LES CALENDRIERS
+      // Point de référence principal : 17 janvier 2026 = 3 Kɔndɔŋ 42795
+      // Donc : 2026 grégorien = 42795 bassa'a
+      // Différence fixe : 42795 - 2026 = 40769
+      const YEAR_DIFFERENCE = 40769; // bassa'a - grégorien
+      
+      // DATE DE RÉFÉRENCE POUR LES CALCULS DE JOURS
+      // Nous avons besoin d'une date de référence absolue
+      const REF_GREGORIAN_DATE = new Date(2026, 0, 17); // 17 janvier 2026
+      const REF_BASSA_DATE = {
+        nwii: 42795,
+        month: 0, // Kɔndɔŋ
+        dayInMonth: 3,
+        dayOfYear: 2 // (0-indexed) : 0 = 1er janvier, 2 = 3 janvier
+      };
       
       // ÉTAT
       let currentBassaDate;
@@ -827,64 +1016,157 @@
         nextBtn: document.getElementById('next'),
         traditionBtn: document.getElementById('tradition-btn'),
         traditionModal: document.getElementById('tradition-modal'),
-        closeModal: document.getElementById('close-modal')
+        closeModal: document.getElementById('close-modal'),
+        // Nouveaux éléments pour le sélecteur de date
+        yearInput: document.getElementById('year-input'),
+        monthSelect: document.getElementById('month-select'),
+        daySelect: document.getElementById('day-select'),
+        goTodayBtn: document.getElementById('go-today-btn'),
+        goDateBtn: document.getElementById('go-date-btn'),
+        dateError: document.getElementById('date-error')
       };
       
-      // FONCTIONS DE CALCUL
-      function calculateBassaDate(gregorianDate) {
-        const diffDays = Math.floor((gregorianDate - referenceGregorian) / (1000 * 60 * 60 * 24));
+      // ==============================================
+      // FONCTIONS DE CONVERSION ANNÉES
+      // ==============================================
+      
+      function bassaToGregorianYear(bassaYear) {
+        // Simple soustraction : année grégorienne = année bassa - 40769
+        return bassaYear - YEAR_DIFFERENCE;
+      }
+      
+      function gregorianToBassaYear(gregorianYear) {
+        // Simple addition : année bassa = année grégorienne + 40769
+        return gregorianYear + YEAR_DIFFERENCE;
+      }
+      
+      function formatGregorianYear(year) {
+        if (year < 1) {
+          return Math.abs(year - 1) + " A.V.J.C.";
+        }
+        return year;
+      }
+      
+      // ==============================================
+      // FONCTIONS DE CALCUL DE DATES (NOUVELLES)
+      // ==============================================
+      
+      function calculateDaysBetweenBassaDates(startDate, endDate) {
+        // Calcule le nombre de jours entre deux dates Bassa'a
+        // Une date Bassa'a = {nwii, month, dayInMonth}
         
-        let totalBassaDays = referenceBassa.dayInMonth - 1;
-        totalBassaDays += referenceBassa.month * DAYS_IN_MONTH;
-        totalBassaDays += diffDays;
+        // Convertir chaque date en nombre total de jours depuis l'année 0
+        function dateToDays(date) {
+          // Années complètes avant cette année
+          let totalDays = date.nwii * DAYS_IN_COMMON_YEAR;
+          
+          // Ajouter les jours des années Ngand (5 jours par an)
+          totalDays += date.nwii * NGAND_DAYS;
+          
+          // Ajouter les jours des mois dans l'année en cours
+          totalDays += date.month * DAYS_IN_MONTH;
+          
+          // Ajouter les jours dans le mois
+          totalDays += (date.dayInMonth - 1);
+          
+          return totalDays;
+        }
         
-        const yearsFromRef = Math.floor(totalBassaDays / DAYS_IN_YEAR);
-        totalBassaDays += yearsFromRef * NGAND_DAYS;
+        return dateToDays(endDate) - dateToDays(startDate);
+      }
+      
+      function calculateGregorianDateFromBassa(bassaDate) {
+        // Convertit une date Bassa'a en date grégorienne
+        // 1. Calculer la différence en années entre la date Bassa'a et la référence
+        const yearsDiff = bassaDate.nwii - REF_BASSA_DATE.nwii;
         
-        const nwii = referenceBassa.nwii + yearsFromRef;
-        let dayInYear = totalBassaDays % DAYS_IN_YEAR;
-        if (dayInYear < 0) dayInYear += DAYS_IN_YEAR;
+        // 2. Calculer la différence en jours dans l'année
+        const startDayOfYear = REF_BASSA_DATE.month * DAYS_IN_MONTH + (REF_BASSA_DATE.dayInMonth - 1);
+        const endDayOfYear = bassaDate.month * DAYS_IN_MONTH + (bassaDate.dayInMonth - 1);
         
-        const isNgand = dayInYear >= 360;
-        let month, dayInMonth, tolangwaIndex, ngwaIndex;
+        // 3. Nombre total de jours de différence
+        let totalDaysDiff = yearsDiff * DAYS_IN_YEAR; // 365 jours par an
         
-        if (isNgand) {
-          month = 11;
-          dayInMonth = 30 + (dayInYear - 360 + 1);
-          tolangwaIndex = 35;
-          ngwaIndex = 9;
+        // Ajouter les jours de différence dans l'année
+        totalDaysDiff += (endDayOfYear - startDayOfYear);
+        
+        // 4. Créer une nouvelle date grégorienne en ajoutant la différence
+        const gregorianDate = new Date(REF_GREGORIAN_DATE);
+        gregorianDate.setDate(gregorianDate.getDate() + totalDaysDiff);
+        
+        return gregorianDate;
+      }
+      
+      function calculateBassaDateFromGregorian(gregorianDate) {
+        // Convertit une date grégorienne en date Bassa'a
+        // 1. Différence en jours depuis la référence
+        const diffDays = Math.floor((gregorianDate - REF_GREGORIAN_DATE) / (1000 * 60 * 60 * 24));
+        
+        // 2. Calculer le nombre d'années Bassa'a complètes
+        const yearsFromRef = Math.floor(diffDays / DAYS_IN_YEAR);
+        
+        // 3. Année Bassa'a résultante
+        const nwii = REF_BASSA_DATE.nwii + yearsFromRef;
+        
+        // 4. Jours restants dans l'année en cours
+        let daysInCurrentYear = diffDays - (yearsFromRef * DAYS_IN_YEAR);
+        daysInCurrentYear += (REF_BASSA_DATE.month * DAYS_IN_MONTH + (REF_BASSA_DATE.dayInMonth - 1));
+        
+        // Ajuster si négatif
+        if (daysInCurrentYear < 0) {
+          daysInCurrentYear += DAYS_IN_YEAR;
+        }
+        
+        // 5. Déterminer si c'est un jour Ngand (jours 361-365)
+        let month, dayInMonth;
+        
+        if (daysInCurrentYear >= 360) {
+          // Jour Ngand
+          month = 11; // Hilonde
+          dayInMonth = 30 + (daysInCurrentYear - 360 + 1);
         } else {
-          month = Math.floor(dayInYear / DAYS_IN_MONTH);
-          dayInMonth = (dayInYear % DAYS_IN_MONTH) + 1;
-          const tolangwaInYear = Math.floor(dayInYear / DAYS_PER_TOLANGWA);
-          tolangwaIndex = tolangwaInYear % TOLANGWA_PER_YEAR;
-          if (tolangwaIndex < 0) tolangwaIndex += TOLANGWA_PER_YEAR;
-          ngwaIndex = (dayInMonth - 1) % DAYS_PER_TOLANGWA;
+          // Jour normal
+          month = Math.floor(daysInCurrentYear / DAYS_IN_MONTH);
+          dayInMonth = (daysInCurrentYear % DAYS_IN_MONTH) + 1;
         }
         
         return {
           nwii: nwii,
           month: month,
           dayInMonth: dayInMonth,
+          gregorianDate: gregorianDate
+        };
+      }
+      
+      // ==============================================
+      // FONCTIONS DE CALCUL DES INFORMATIONS
+      // ==============================================
+      
+      function getBassaDateDetails(bassaDate) {
+        // Calcule toutes les informations pour une date Bassa'a
+        const dayInYear = (bassaDate.month * DAYS_IN_MONTH) + (bassaDate.dayInMonth - 1);
+        const tolangwaInYear = Math.floor(dayInYear / DAYS_PER_TOLANGWA);
+        const tolangwaIndex = tolangwaInYear % TOLANGWA_PER_YEAR;
+        const ngwaIndex = (bassaDate.dayInMonth - 1) % DAYS_PER_TOLANGWA;
+        
+        // Calculer la date grégorienne CORRECTE
+        const gregorianDate = calculateGregorianDateFromBassa(bassaDate);
+        const gregorianYear = gregorianDate.getFullYear();
+        
+        return {
+          nwii: bassaDate.nwii,
+          month: bassaDate.month,
+          dayInMonth: bassaDate.dayInMonth,
           tolangwaIndex: tolangwaIndex,
           tolangwaName: tolangwaNames[tolangwaIndex],
           ngwaIndex: ngwaIndex,
           ngwaName: ngwaDays[ngwaIndex].name,
           ngwaMeaning: ngwaDays[ngwaIndex].meaning,
-          isNgand: isNgand,
-          gregorianDate: gregorianDate
+          gregorianDate: gregorianDate,
+          gregorianYear: gregorianYear,
+          isNgand: bassaDate.dayInMonth > 30,
+          dayInYear: dayInYear
         };
-      }
-      
-      function calculateGregorianDate(bassaDate) {
-        const yearsDiff = bassaDate.nwii - referenceBassa.nwii;
-        let totalDays = (bassaDate.month * DAYS_IN_MONTH) + (bassaDate.dayInMonth - 1);
-        totalDays -= yearsDiff * NGAND_DAYS;
-        totalDays -= (referenceBassa.month * DAYS_IN_MONTH) + (referenceBassa.dayInMonth - 1);
-        
-        const resultDate = new Date(referenceGregorian);
-        resultDate.setDate(resultDate.getDate() + totalDays);
-        return resultDate;
       }
       
       function isSpecialDay(gregorianDate) {
@@ -897,27 +1179,226 @@
         return bassaDate.month === 0 && bassaDate.dayInMonth === 1;
       }
       
-      // FONCTIONS D'AFFICHAGE
-      function updateCurrentDateDisplay(date) {
-        const bassaDate = date || currentBassaDate;
-        
-        elements.currentNwii.textContent = bassaDate.nwii;
-        elements.currentMonth.textContent = bassaMonths[bassaDate.month].name;
-        elements.currentMonthDetail.textContent = bassaMonths[bassaDate.month].meaning;
-        elements.currentTolangwa.textContent = bassaDate.tolangwaName;
-        elements.currentTolangwaDetail.textContent = `Décade ${bassaDate.tolangwaIndex + 1} de l'année`;
-        elements.currentNgwa.textContent = bassaDate.ngwaName;
-        elements.currentNgwaDetail.textContent = bassaDate.ngwaMeaning;
-        elements.currentDate.textContent = bassaDate.dayInMonth;
-        elements.currentDateDetail.textContent = `Jour ${bassaDate.dayInMonth} du mois`;
-        
-        const gregorianDate = bassaDate.gregorianDate || calculateGregorianDate(bassaDate);
-        elements.currentGregorian.textContent = gregorianDate.toLocaleDateString('fr-FR', {
-          weekday: 'long',
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric'
+      // ==============================================
+      // FONCTIONS DE VÉRIFICATION DES LIMITES
+      // ==============================================
+      
+      function isWithinBounds(nwii, month) {
+        if (nwii < MIN_YEAR || nwii > MAX_YEAR) return false;
+        if (nwii === MIN_YEAR && month < 0) return false;
+        if (nwii === MAX_YEAR && month > 11) return false;
+        return true;
+      }
+      
+      function updateNavButtons() {
+        elements.prevBtn.disabled = !isWithinBounds(displayedNwii, displayedMonth - 1);
+        elements.nextBtn.disabled = !isWithinBounds(displayedNwii, displayedMonth + 1);
+      }
+      
+      // ==============================================
+      // FONCTIONS DU SELECTEUR DE DATE
+      // ==============================================
+      
+      function initDateSelector() {
+        // Remplir la liste des mois
+        bassaMonths.forEach((month, index) => {
+          const option = document.createElement('option');
+          option.value = index;
+          option.textContent = month.name;
+          elements.monthSelect.appendChild(option);
         });
+        
+        // Remplir la liste des jours (1 à 30)
+        for (let i = 1; i <= 30; i++) {
+          const option = document.createElement('option');
+          option.value = i;
+          option.textContent = i;
+          elements.daySelect.appendChild(option);
+        }
+        
+        // Mettre à jour les valeurs avec la date actuelle
+        updateDateSelector();
+        
+        // Écouter les changements
+        elements.yearInput.addEventListener('change', validateYearInput);
+        elements.monthSelect.addEventListener('change', updateDaySelect);
+        elements.goTodayBtn.addEventListener('click', goToToday);
+        elements.goDateBtn.addEventListener('click', goToSelectedDate);
+        
+        // Touche Entrée dans l'année
+        elements.yearInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            goToSelectedDate();
+          }
+        });
+      }
+      
+      function validateYearInput() {
+        const year = parseInt(elements.yearInput.value);
+        let error = '';
+        
+        if (isNaN(year)) {
+          error = 'Veuillez entrer une année valide';
+        } else if (year < MIN_YEAR || year > MAX_YEAR) {
+          error = `L'année doit être entre ${MIN_YEAR} et ${MAX_YEAR}`;
+        }
+        
+        if (error) {
+          showDateError(error);
+          return false;
+        } else {
+          hideDateError();
+          return true;
+        }
+      }
+      
+      function updateDateSelector() {
+        // Synchroniser avec le calendrier affiché
+        elements.yearInput.value = displayedNwii;
+        elements.monthSelect.value = displayedMonth;
+        
+        // Si une date est sélectionnée, mettre à jour le jour
+        if (selectedBassaDate && 
+            selectedBassaDate.nwii === displayedNwii && 
+            selectedBassaDate.month === displayedMonth) {
+          elements.daySelect.value = selectedBassaDate.dayInMonth;
+        } else {
+          // Sinon, sélectionner le premier jour
+          elements.daySelect.value = 1;
+        }
+        
+        // Valider l'année
+        validateYearInput();
+      }
+      
+      function updateDaySelect() {
+        hideDateError();
+      }
+      
+      function goToToday() {
+        const today = new Date();
+        const bassaToday = calculateBassaDateFromGregorian(today);
+        
+        displayedMonth = bassaToday.month;
+        displayedNwii = bassaToday.nwii;
+        
+        renderCalendar();
+        updateDateSelector();
+        hideDateError();
+        
+        // Sélectionner le jour d'aujourd'hui
+        const todayCell = elements.calendarGrid.children[bassaToday.dayInMonth - 1];
+        if (todayCell) {
+          todayCell.click();
+        }
+      }
+      
+      function goToSelectedDate() {
+        if (!validateYearInput()) return;
+        
+        const year = parseInt(elements.yearInput.value);
+        const month = parseInt(elements.monthSelect.value);
+        const day = parseInt(elements.daySelect.value);
+        
+        // Validation des données
+        if (year < MIN_YEAR || year > MAX_YEAR) {
+          showDateError(`L'année doit être entre ${MIN_YEAR} et ${MAX_YEAR}`);
+          return;
+        }
+        
+        if (month < 0 || month > 11) {
+          showDateError('Mois invalide');
+          return;
+        }
+        
+        if (day < 1 || day > 30) {
+          showDateError('Jour invalide');
+          return;
+        }
+        
+        // Mettre à jour l'affichage
+        displayedMonth = month;
+        displayedNwii = year;
+        
+        renderCalendar();
+        
+        // Créer la date Bassa'a et sélectionner le jour
+        const bassaDate = {
+          nwii: year,
+          month: month,
+          dayInMonth: day
+        };
+        
+        const dateDetails = getBassaDateDetails(bassaDate);
+        selectedBassaDate = {
+          ...bassaDate,
+          tolangwaIndex: dateDetails.tolangwaIndex,
+          tolangwaName: dateDetails.tolangwaName,
+          ngwaIndex: dateDetails.ngwaIndex,
+          ngwaName: dateDetails.ngwaName,
+          ngwaMeaning: dateDetails.ngwaMeaning,
+          gregorianDate: dateDetails.gregorianDate
+        };
+        
+        // Mettre à jour les informations du jour
+        updateCurrentDateDisplay(selectedBassaDate);
+        
+        // Sélectionner visuellement le jour
+        const dayCell = elements.calendarGrid.children[day - 1];
+        if (dayCell) {
+          document.querySelectorAll('.day-cell.selected').forEach(cell => {
+            cell.classList.remove('selected');
+          });
+          dayCell.classList.add('selected');
+        }
+        
+        hideDateError();
+      }
+      
+      function showDateError(message) {
+        elements.dateError.textContent = message;
+        elements.dateError.style.display = 'block';
+      }
+      
+      function hideDateError() {
+        elements.dateError.style.display = 'none';
+      }
+      
+      // ==============================================
+      // FONCTIONS D'AFFICHAGE
+      // ==============================================
+      
+      function updateCurrentDateDisplay(date) {
+        if (!date) return;
+        
+        const dateDetails = getBassaDateDetails(date);
+        
+        elements.currentNwii.textContent = dateDetails.nwii;
+        elements.currentMonth.textContent = bassaMonths[dateDetails.month].name;
+        elements.currentMonthDetail.textContent = bassaMonths[dateDetails.month].meaning;
+        elements.currentTolangwa.textContent = dateDetails.tolangwaName;
+        elements.currentTolangwaDetail.textContent = `Décade ${dateDetails.tolangwaIndex + 1} de l'année`;
+        elements.currentNgwa.textContent = dateDetails.ngwaName;
+        elements.currentNgwaDetail.textContent = dateDetails.ngwaMeaning;
+        elements.currentDate.textContent = dateDetails.dayInMonth;
+        elements.currentDateDetail.textContent = `Jour ${dateDetails.dayInMonth} du mois`;
+        
+        // Formater la date grégorienne CORRECTEMENT
+        const gregorianDate = dateDetails.gregorianDate;
+        const gregorianYear = gregorianDate.getFullYear();
+        const formattedYear = formatGregorianYear(gregorianYear);
+        
+        // Formater la date complète
+        const dayNames = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+        const monthNames = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+        
+        const dayOfWeek = dayNames[gregorianDate.getDay()];
+        const dayOfMonth = gregorianDate.getDate();
+        const monthName = monthNames[gregorianDate.getMonth()];
+        
+        const gregorianFormatted = `${dayOfWeek} ${dayOfMonth} ${monthName} ${formattedYear}`;
+        
+        elements.currentGregorian.textContent = gregorianFormatted;
       }
       
       function renderCalendar() {
@@ -926,7 +1407,7 @@
         
         elements.calendarGrid.innerHTML = '';
         
-        const todayBassa = calculateBassaDate(new Date());
+        const todayBassa = calculateBassaDateFromGregorian(new Date());
         const isCurrentMonth = displayedMonth === todayBassa.month && displayedNwii === todayBassa.nwii;
         
         for (let day = 1; day <= 30; day++) {
@@ -947,7 +1428,8 @@
                             selectedBassaDate.nwii === displayedNwii && 
                             selectedBassaDate.dayInMonth === day;
           
-          const gregorianDate = calculateGregorianDate(dayBassaDate);
+          // Calculer la date grégorienne CORRECTE
+          const gregorianDate = calculateGregorianDateFromBassa(dayBassaDate);
           const isSpecial = isSpecialDay(gregorianDate);
           const isNewYear = isNewYearDay(dayBassaDate);
           
@@ -958,6 +1440,7 @@
           if (isSpecial) dayCell.classList.add('special-day');
           if (isNewYear) dayCell.classList.add('new-year-day');
           
+          // Formater la date grégorienne pour l'affichage dans la cellule
           const gregorianFormatted = gregorianDate.toLocaleDateString('fr-FR', {
             day: 'numeric',
             month: 'short'
@@ -981,12 +1464,24 @@
           
           dayCell.addEventListener('click', function() {
             const bassaData = JSON.parse(this.dataset.bassaDate);
-            const gregorianDate = calculateGregorianDate(bassaData);
-            const selectedDate = calculateBassaDate(gregorianDate);
-            selectedBassaDate = selectedDate;
+            const gregorianDate = calculateGregorianDateFromBassa(bassaData);
+            const selectedDate = {
+              ...bassaData,
+              gregorianDate: gregorianDate
+            };
+            
+            // Calculer les informations complètes
+            const dateDetails = getBassaDateDetails(selectedDate);
+            selectedBassaDate = {
+              ...selectedDate,
+              tolangwaName: dateDetails.tolangwaName,
+              ngwaName: dateDetails.ngwaName,
+              ngwaMeaning: dateDetails.ngwaMeaning
+            };
             
             // Mettre à jour l'affichage
-            updateCurrentDateDisplay(selectedDate);
+            updateCurrentDateDisplay(selectedBassaDate);
+            updateDateSelector();
             
             // Mettre à jour la sélection visuelle
             document.querySelectorAll('.day-cell.selected').forEach(cell => {
@@ -999,16 +1494,35 @@
         }
         
         // Sélectionner automatiquement aujourd'hui si c'est le bon mois
-        if (isCurrentMonth) {
+        if (isCurrentMonth && (!selectedBassaDate || selectedBassaDate.nwii !== displayedNwii || selectedBassaDate.month !== displayedMonth)) {
           const todayCell = elements.calendarGrid.children[todayBassa.dayInMonth - 1];
           if (todayCell) {
-            todayCell.classList.add('selected');
-            selectedBassaDate = todayBassa;
+            todayCell.click();
+          }
+        } else if (selectedBassaDate && 
+                  selectedBassaDate.nwii === displayedNwii && 
+                  selectedBassaDate.month === displayedMonth) {
+          // Resélectionner la date précédemment sélectionnée
+          const selectedCell = elements.calendarGrid.children[selectedBassaDate.dayInMonth - 1];
+          if (selectedCell) {
+            document.querySelectorAll('.day-cell.selected').forEach(cell => {
+              cell.classList.remove('selected');
+            });
+            selectedCell.classList.add('selected');
           }
         }
+        
+        // Mettre à jour le sélecteur de date
+        updateDateSelector();
+        
+        // Mettre à jour les boutons de navigation
+        updateNavButtons();
       }
       
+      // ==============================================
       // PHASE DE LA LUNE
+      // ==============================================
+      
       function updateMoonPhase() {
         const today = new Date();
         const phase = moonPhase(today);
@@ -1046,7 +1560,10 @@
         return ((days % synodicMonth) + synodicMonth) % synodicMonth;
       }
       
+      // ==============================================
       // GESTION DU MODAL TRADITION
+      // ==============================================
+      
       elements.traditionBtn.addEventListener('click', function() {
         elements.traditionModal.style.display = 'block';
         document.body.style.overflow = 'hidden';
@@ -1065,61 +1582,105 @@
         }
       });
       
-      // NAVIGATION
+      // ==============================================
+      // NAVIGATION AVEC LES FLÈCHES
+      // ==============================================
+      
       elements.prevBtn.addEventListener('click', function() {
+        if (this.disabled) return;
+        
         displayedMonth--;
         if (displayedMonth < 0) {
           displayedMonth = 11;
           displayedNwii--;
         }
+        
+        // Vérifier les limites
+        if (!isWithinBounds(displayedNwii, displayedMonth)) {
+          displayedNwii = MIN_YEAR;
+          displayedMonth = 0;
+        }
+        
         renderCalendar();
       });
       
       elements.nextBtn.addEventListener('click', function() {
+        if (this.disabled) return;
+        
         displayedMonth++;
         if (displayedMonth > 11) {
           displayedMonth = 0;
           displayedNwii++;
         }
+        
+        // Vérifier les limites
+        if (!isWithinBounds(displayedNwii, displayedMonth)) {
+          displayedNwii = MAX_YEAR;
+          displayedMonth = 11;
+        }
+        
         renderCalendar();
       });
       
       // Support tactile pour navigation
       elements.prevBtn.addEventListener('touchstart', function(e) {
         e.preventDefault();
-        this.style.transform = 'scale(0.95)';
+        if (!this.disabled) {
+          this.style.transform = 'scale(0.95)';
+        }
       });
       
       elements.prevBtn.addEventListener('touchend', function(e) {
         e.preventDefault();
         this.style.transform = '';
-        this.click();
+        if (!this.disabled) {
+          this.click();
+        }
       });
       
       elements.nextBtn.addEventListener('touchstart', function(e) {
         e.preventDefault();
-        this.style.transform = 'scale(0.95)';
+        if (!this.disabled) {
+          this.style.transform = 'scale(0.95)';
+        }
       });
       
       elements.nextBtn.addEventListener('touchend', function(e) {
         e.preventDefault();
         this.style.transform = '';
-        this.click();
+        if (!this.disabled) {
+          this.click();
+        }
       });
       
+      // ==============================================
       // INITIALISATION
+      // ==============================================
+      
       function init() {
-        currentBassaDate = calculateBassaDate(new Date());
+        // Calculer la date d'aujourd'hui
+        const today = new Date();
+        currentBassaDate = calculateBassaDateFromGregorian(today);
+        
         displayedMonth = currentBassaDate.month;
         displayedNwii = currentBassaDate.nwii;
         
-        updateCurrentDateDisplay();
+        // Initialiser le sélecteur de date
+        initDateSelector();
+        
+        // Initialiser avec la date d'aujourd'hui
+        selectedBassaDate = currentBassaDate;
+        updateCurrentDateDisplay(currentBassaDate);
+        
         renderCalendar();
         updateMoonPhase();
         
         // Mettre à jour l'heure toutes les minutes
         setInterval(function() {
-          currentBassaDate = calculateBassaDate(new Date());
+          const now = new Date();
+          currentBassaDate = calculateBassaDateFromGregorian(now);
+          
+          // Si nous affichons le mois en cours, mettre à jour
           if (displayedMonth === currentBassaDate.month && displayedNwii === currentBassaDate.nwii) {
             renderCalendar();
           }
@@ -1131,6 +1692,13 @@
       
       // DÉMARRER
       init();
+      
+      // Fonctions de débogage (à supprimer en production)
+      window.debugConversion = function(bassaYear) {
+        const gregYear = bassaToGregorianYear(bassaYear);
+        console.log(`Bassa'a ${bassaYear} = Grégorien ${gregYear} (${gregYear < 1 ? Math.abs(gregYear - 1) + " A.V.J.C." : gregYear})`);
+        return gregYear;
+      };
     });
   </script>
 </body>
